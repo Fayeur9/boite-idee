@@ -14,7 +14,7 @@ function createConnextionBDD(){
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Activer les exceptions
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); // Mode de récupération par défaut
 
-        echo "Connexion réussie à la base de données '$table'.";
+        //echo "Connexion réussie à la base de données '$table'.";
         return $pdo;
     } catch (PDOException $e) {
         // Gérer les erreurs de connexion
