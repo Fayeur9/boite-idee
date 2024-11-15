@@ -31,28 +31,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     require_once 'header.php';
     ?>
     <main>
-        <section class="tableau-idees p-4">
+        <div class="w-100 text-center p-4">
+            <h1>Mes Idées</h1>
+        </div>
+        <section class="p-4">
             <?php
             foreach($tabIdees as $key=>$value){
+                $tabDate=explode(' ',$value['created_at']);
                 ?>
-                <article class="border border-danger">
-                    <span class="col-lg-6">nom:<?=$value['identifiant_user']?></span>
-                    <span class="col-lg-6">date de création:<?=$value['created_at']?></span><br>
-                    <span class="col-lg-12">idee:<?=$value['text_idees']?></span><br>
-                    <form action="creation_idees.php" method="POST">
-                        <input type="text" name="id_idee" value="<?=$value['id_idees']?>" class="d-none">
-                        <input type="text" name="titre_idees" value="<?=$value['titre_idees']?>" class="d-none">
-                        <input type="text" name="text_idees" value="<?=$value['text_idees']?>" class="d-none">
-                        <button type="submit" class="btn-submit btn">
-                            <span class="material-icons">edit</span>
-                        </button>
-                    </form>
-                    <div>
-                        <span class="material-icons">arrow_upward</span>
-                        <?=$tabRatioIdees[$value['id_idees']]['upvote']?>
-                        -
-                        <?=$tabRatioIdees[$value['id_idees']]['downvote']?>
-                        <span class="material-icons">arrow_downward</span>
+                <article class="border border-dark shadow-lg p-3 mb-5 bg-body-tertiary rounded form-control">
+                    <div class="col-lg-6">
+                        <span class="col-lg-4"><strong><h3><?=strtoupper($value['titre_idees'])?></h3></strong></span>
+                        <span class="col-lg-3"><?=$value['identifiant_user']?></span>
+                        <span class="col-lg-3"><?=$tabDate[0]?></span><br><br>
+                        <span class="col-lg-12">idée: <?=$value['text_idees']?></span><br>
+                    </div>
+                    <div class="col-lg-6">
+                        <form action="creation_idees.php" method="POST">
+                            <input type="text" name="id_idee" value="<?=$value['id_idees']?>" class="d-none">
+                            <input type="text" name="titre_idees" value="<?=$value['titre_idees']?>" class="d-none">
+                            <input type="text" name="text_idees" value="<?=$value['text_idees']?>" class="d-none">
+                            <div>
+                                <button type="submit" class="btn">
+                                    <span class="material-icons">edit</span>
+                                </button>
+                                <span class="material-icons">arrow_upward</span>
+                                <?=$tabRatioIdees[$value['id_idees']]['upvote']?>
+                                -
+                                <?=$tabRatioIdees[$value['id_idees']]['downvote']?>
+                                <span class="material-icons">arrow_downward</span>
+                            </div>
+                        </form>
                     </div>
                 </article>
                 <br>
