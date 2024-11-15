@@ -1,5 +1,5 @@
 <?php
-include 'fonctions.php';
+require("fonctions.php");
 $pdo = createConnextionBDD();
 
 $errLog = '';
@@ -42,7 +42,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <form id="formulaireConnexion" method="POST">
+    <form method="POST">
         <h1>Formulaire d'inscription :</h1>
         <p class="text-danger"><?= $errLog ?></p>
         <label for="login">Login :</label>

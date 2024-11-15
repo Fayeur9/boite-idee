@@ -1,6 +1,6 @@
 <?php
 session_start();
-include 'fonctions.php';
+require("fonctions.php");
 $pdo = createConnextionBDD();
 $errLog = '';
 
@@ -20,7 +20,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["id_user"] = $res["id_user"];
             $_SESSION["identifiant_user"] = $res["identifiant_user"];
 
-            header("Location: liste_idees.php");
+            header("Location: creation_idees.php");
         } else {
             $errLog = "Login ou mot de passe incorrect";
         }
@@ -40,11 +40,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <form id="formulaireConnexion" method="POST">
+    <form method="POST">
         <h1>Formulaire de connexion :</h1>
         <p class="text-danger"><?= $errLog ?></p>
         <label for="login">Login :</label>
-        <input type="text" class="form-control" name="login">
+        <input type="text" class="form-control" name="login" value="<?= $_SERVER["REQUEST_METHOD"] == "POST" ? trim($_POST["login"]) : '' ?>">
         <br>
         <label for="mdp">Mot de passe :</label>
         <input type="password" class="form-control" name="mdp">
