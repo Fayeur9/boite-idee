@@ -1,8 +1,6 @@
 <?php
-include 'fonctions.php';
-
-$pdo=createConnextionBDD();
-
+session_unset();
+session_destroy();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,6 +10,7 @@ $pdo=createConnextionBDD();
     <title>Document</title>
 </head>
 <body>
-    <button><a href="liste_idees.php">liste des idées</a></button>
+    <span>Vous êtes maintenant déconnecté! </span><br>
+    <button><a href="index.php">Retour à la connexion</a></button>
 </body>
 </html>
