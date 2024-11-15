@@ -37,9 +37,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <section class="tableau-idees p-4">
             <?php
-                // echo '<pre>';
-                // print_r($tabIdees);
-                // echo '</pre>';
+                echo '<pre>';
+                print_r($tabIdees);
+                echo '</pre>';
             foreach($tabIdees as $key=>$value){
                 $tabDate=$value['created_at']
                 ?>

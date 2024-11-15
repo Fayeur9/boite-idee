@@ -53,17 +53,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <form method="POST">
-        <h1>Création d'Idée :</h1>
-        <p class="<?= $msgIdee[0] ?>"><?= $msgIdee[1] ?></p>
-        <label for="titre_idees">Titre de l'idée :</label>
-        <input type="text" class="form-control" name="titre_idees" value="<?= $_SERVER["REQUEST_METHOD"] == "POST" ? trim($_POST["titre_idees"]) : '' ?>">
-        <label for="text_idees">Votre idée :</label>
-        <textarea rows="10" class="form-control" name="text_idees" maxlength="500"><?= $_SERVER["REQUEST_METHOD"] == "POST" ? trim($_POST["text_idees"]) : '' ?></textarea>
-        <br>
-        <input type="submit" class="btn btn-secondary" value="Créer">
-    </form>
-
+    <?php require_once 'header.php'; ?>
+    <main>
+        <form method="POST">
+            <h1>Création d'Idée :</h1>
+            <p class="<?= $msgIdee[0] ?>"><?= $msgIdee[1] ?></p>
+            <label for="titre_idees">Titre de l'idée :</label>
+            <input type="text" class="form-control" name="titre_idees" value="<?= $_SERVER["REQUEST_METHOD"] == "POST" ? trim($_POST["titre_idees"]) : '' ?>">
+            <label for="text_idees">Votre idée :</label>
+            <textarea rows="10" class="form-control" name="text_idees" maxlength="500"><?= $_SERVER["REQUEST_METHOD"] == "POST" ? trim($_POST["text_idees"]) : '' ?></textarea>
+            <br>
+            <input type="submit" class="btn btn-secondary" value="Créer">
+        </form>
+    </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
