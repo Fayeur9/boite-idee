@@ -59,9 +59,9 @@ $tabIdees=getListIdeesByUser($pdo,['id_user'=>$_SESSION['id_user']]);
                                     <span class="material-icons">edit</span>
                                 </button>
                                 <span class="material-icons">arrow_upward</span>
-                                <?=$tabRatioIdees[$value['id_idees']]['upvote']?>
+                                <?=$tabRatioIdees[$value['id_idees']]['upvote']??0?>
                                 -
-                                <?=$tabRatioIdees[$value['id_idees']]['downvote']?>
+                                <?=$tabRatioIdees[$value['id_idees']]['downvote']??0?>
                                 <span class="material-icons">arrow_downward</span>
                             </div>
                         </form>
