@@ -3,7 +3,7 @@ session_start();
 include 'fonctions.php';
 //$_SESSION['id_user']=1;
 
-var_dump($_SESSION['id_user']);
+// var_dump($_SESSION['id_user']);
 
 $pdo=createConnextionBDD();
 

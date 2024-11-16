@@ -37,7 +37,7 @@ function getListIdees($pdo){
             user AS u
         WHERE
             i.created_by=u.id_user
-        ORDER BY i.created_at ASC
+        ORDER BY i.created_at DESC
     ";
 
     $stmt = $pdo->prepare($requete);
@@ -59,7 +59,7 @@ function getListIdeesByUser($pdo, $pParametres){
         WHERE
             i.created_by=u.id_user AND
             u.id_user=:id_user
-        ORDER BY i.created_at ASC
+        ORDER BY i.created_at DESC
     ";
 
     $stmt = $pdo->prepare($requete);
