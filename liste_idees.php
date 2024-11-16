@@ -4,15 +4,12 @@ include 'fonctions.php';
 //$_SESSION['id_user']=1;
 
 $pdo=createConnextionBDD();
-$tabIdees=getListIdees($pdo);
-$tabRatioIdees=getCountVoteIdees($pdo);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // echo '<pre>';
-    // print_r(value: $_POST);
-    // echo '</pre>';
     $vote=(isset($_POST['downvote']))?-1:1;
     setVoteIdee($pdo,['id_user'=>$_SESSION['id_user'],'id_idee'=>$_POST['id_idee'],'vote'=>$vote]);
 }
+$tabIdees=getListIdees($pdo);
+$tabRatioIdees=getCountVoteIdees($pdo);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,11 +34,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <section class="tableau-idees p-4">
             <?php
-                echo '<pre>';
-                print_r($tabIdees);
-                echo '</pre>';
             foreach($tabIdees as $key=>$value){
-                $tabDate=$value['created_at']
+                $tabDate=explode(' ',$value['created_at']);
+                // echo '<pre>';
+                // print_r($tabDate);
+                // echo '</pre>';
                 ?>
                 <article class="border border-dark rounded rounded-pill shadow form-control">
                     <div class="col-lg-6">
@@ -61,9 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </form>
                         <div>
                             <span class="material-icons">arrow_upward</span>
-                            <?=$tabRatioIdees[$value['id_idees']]['upvote']?>
+                            <?=$tabRatioIdees[$value['id_idees']]['upvote']??0?>
                             -
-                            <?=$tabRatioIdees[$value['id_idees']]['downvote']?>
+                            <?=$tabRatioIdees[$value['id_idees']]['downvote']??0?>
                             <span class="material-icons">arrow_downward</span>
                         </div>
                     </div>

@@ -6,8 +6,6 @@ include 'fonctions.php';
 var_dump($_SESSION['id_user']);
 
 $pdo=createConnextionBDD();
-$tabRatioIdees=getCountVoteIdees($pdo);
-$tabIdees=getListIdeesByUser($pdo,['id_user'=>$_SESSION['id_user']]);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo '<pre>';
@@ -16,6 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $vote=(isset($_POST['downvote']))?-1:1;
     editIdee($pdo,['id_user'=>$_SESSION['id_user'],'id_idees'=>$_POST['id_idees'],'vote'=>$vote]);
 }
+$tabRatioIdees=getCountVoteIdees($pdo);
+$tabIdees=getListIdeesByUser($pdo,['id_user'=>$_SESSION['id_user']]);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
