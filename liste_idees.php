@@ -1,7 +1,7 @@
 <?php
 session_start();
 include 'fonctions.php';
-$_SESSION['id_user']=1;
+//$_SESSION['id_user']=1;
 
 $pdo=createConnextionBDD();
 $tabIdees=getListIdees($pdo);

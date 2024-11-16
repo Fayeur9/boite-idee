@@ -1,6 +1,5 @@
 <?php
 session_start();
-
 require("fonctions.php");
 $pdo = createConnextionBDD();
 $msgIdee = ["", ""];
@@ -16,13 +15,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $msgIdee = ["text-danger", "Vous ne pouvez pas créer d'idée en mettant un titre ou un text vide"];
     } else {
         $date = date('Y-m-d H:i:s', time());
-        if ($id_idees != null) {
+        if ($id_idees != null && isset($_POST['submit'])) {
             $sql = "UPDATE `idees` SET `titre_idees`= :titre_idees,`text_idees`= :text_idees, `updated_at`= :updated_at WHERE `id_idees` = :id_idees";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':titre_idees', $titre_idees, PDO::PARAM_STR);
             $stmt->bindParam(':text_idees', $text_idees, PDO::PARAM_STR);
             $stmt->bindParam(':updated_at', $date, PDO::PARAM_STR);
-        } else {
+            $stmt->bindParam(':id_idees', $id_idees, PDO::PARAM_STR);
+            $stmt->execute();
+
+            $msgIdee = ["text-success", "Idée modifiée avec succès"];
+            $_POST["titre_idees"] = "";
+            $_POST["text_idees"] = "";
+        } elseif (isset($_POST['submit'])) {
             $sql = "INSERT INTO `idees`(`titre_idees`, `text_idees`, `created_by`, `created_at`, `updated_at`) VALUES (:titre_idees, :text_idees, :created_by, :created_at, :updated_at)";
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(':titre_idees', $titre_idees, PDO::PARAM_STR);
@@ -33,9 +38,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute();
 
             $msgIdee = ["text-success", "Idée créée avec succès"];
+            $_POST["titre_idees"] = "";
+            $_POST["text_idees"] = "";
         }
-        $_POST["titre_idees"] = "";
-        $_POST["text_idees"] = "";
     }
 }
 ?>
@@ -63,7 +68,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <label for="text_idees">Votre idée :</label>
             <textarea rows="10" class="form-control" name="text_idees" maxlength="500"><?= $_SERVER["REQUEST_METHOD"] == "POST" ? trim($_POST["text_idees"]) : '' ?></textarea>
             <br>
-            <input type="submit" class="btn btn-secondary" value="Créer">
+            <button type="submit" name="submit" value="clicked" class="btn btn-secondary">Créer</button>
+            <input type="hidden" name="id_idees" value="<?= isset($_POST["id_idees"]) ? $_POST["id_idees"] : '' ?>">
         </form>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

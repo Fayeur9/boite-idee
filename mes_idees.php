@@ -1,7 +1,9 @@
 <?php
 session_start();
 include 'fonctions.php';
-$_SESSION['id_user']=1;
+//$_SESSION['id_user']=1;
+
+var_dump($_SESSION['id_user']);
 
 $pdo=createConnextionBDD();
 $tabRatioIdees=getCountVoteIdees($pdo);
@@ -12,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     print_r($_POST);
     echo '</pre>';
     $vote=(isset($_POST['downvote']))?-1:1;
-    editIdee($pdo,['id_user'=>$_SESSION['id_user'],'id_idee'=>$_POST['id_idee'],'vote'=>$vote]);
+    editIdee($pdo,['id_user'=>$_SESSION['id_user'],'id_idees'=>$_POST['id_idees'],'vote'=>$vote]);
 }
 ?>
 <!DOCTYPE html>
@@ -48,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="col-lg-6">
                         <form action="creation_idees.php" method="POST">
-                            <input type="text" name="id_idee" value="<?=$value['id_idees']?>" class="d-none">
+                            <input type="text" name="id_idees" value="<?=$value['id_idees']?>" class="d-none">
                             <input type="text" name="titre_idees" value="<?=$value['titre_idees']?>" class="d-none">
                             <input type="text" name="text_idees" value="<?=$value['text_idees']?>" class="d-none">
                             <div>
