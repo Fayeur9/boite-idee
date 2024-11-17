@@ -1,13 +1,17 @@
 <?php
 session_start();
 include 'fonctions.php';
-//$_SESSION['id_user']=1;
 
+// Création de la connexion à la BDD
 $pdo=createConnextionBDD();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Si le vote est négatif on stock -1, sinon 1
     $vote=(isset($_POST['downvote']))?-1:1;
+    // Insertion du vote dans la BDD
     setVoteIdee($pdo,['id_user'=>$_SESSION['id_user'],'id_idee'=>$_POST['id_idee'],'vote'=>$vote]);
 }
+// Récupération des idées et de leurs votes pour les afficher après 
+//à laisser après l'update du vote pour que le vote soit pris en compte dans l'update de la page
 $tabIdees=getListIdees($pdo);
 $tabRatioIdees=getCountVoteIdees($pdo);
 ?>
@@ -36,9 +40,6 @@ $tabRatioIdees=getCountVoteIdees($pdo);
             <?php
             foreach($tabIdees as $key=>$value){
                 $tabDate=explode(' ',$value['created_at']);
-                // echo '<pre>';
-                // print_r($tabDate);
-                // echo '</pre>';
                 ?>
                 <article class="border border-dark rounded rounded-pill shadow form-control">
                     <div class="col-lg-6">
@@ -57,6 +58,7 @@ $tabRatioIdees=getCountVoteIdees($pdo);
                             </button>
                         </form>
                         <div>
+                            <!-- affichage des votes de l'idée si trouvé dans le tableau, sinon affiche un 0 -->
                             <span class="material-icons">arrow_upward</span>
                             <?=$tabRatioIdees[$value['id_idees']]['upvote']??0?>
                             -

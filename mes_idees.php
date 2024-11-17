@@ -1,21 +1,13 @@
 <?php
 session_start();
 include 'fonctions.php';
-//$_SESSION['id_user']=1;
 
-// var_dump($_SESSION['id_user']);
-
+// Création de la connexion à la BDD
 $pdo=createConnextionBDD();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre>';
-    $vote=(isset($_POST['downvote']))?-1:1;
-    editIdee($pdo,['id_user'=>$_SESSION['id_user'],'id_idees'=>$_POST['id_idees'],'vote'=>$vote]);
-}
-$tabRatioIdees=getCountVoteIdees($pdo);
+// Récupération des idées de l'utilisateur et de leurs votes pour les afficher après 
 $tabIdees=getListIdeesByUser($pdo,['id_user'=>$_SESSION['id_user']]);
+$tabRatioIdees=getCountVoteIdees($pdo);
 
 ?>
 <!DOCTYPE html>
@@ -27,7 +19,7 @@ $tabIdees=getListIdeesByUser($pdo,['id_user'=>$_SESSION['id_user']]);
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Seaweed+Script&display=swap" rel="stylesheet" />
-    <title>Document</title>
+    <title>Boite à Idées</title>
 </head>
 <body>
     <?php
@@ -55,10 +47,12 @@ $tabIdees=getListIdeesByUser($pdo,['id_user'=>$_SESSION['id_user']]);
                             <input type="text" name="titre_idees" value="<?=$value['titre_idees']?>" class="d-none">
                             <input type="text" name="text_idees" value="<?=$value['text_idees']?>" class="d-none">
                             <div>
+                                <!-- Bouton qui renovie à la page de modification de l'idée -->
                                 <button type="submit" class="btn">
                                     <span class="material-icons">edit</span>
                                 </button>
-                                <span class="material-icons">arrow_upward</span>
+                            <!-- affichage des votes de l'idée si trouvé dans le tableau, sinon affiche un 0 -->
+                            <span class="material-icons">arrow_upward</span>
                                 <?=$tabRatioIdees[$value['id_idees']]['upvote']??0?>
                                 -
                                 <?=$tabRatioIdees[$value['id_idees']]['downvote']??0?>

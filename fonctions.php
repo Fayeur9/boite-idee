@@ -14,8 +14,6 @@ function createConnextionBDD()
         // Configuration des options PDO
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION); // Activer les exceptions
         $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); // Mode de récupération par défaut
-
-        // echo "Connexion réussie à la base de données '$table'.";
         return $pdo;
     } catch (PDOException $e) {
         // Gérer les erreurs de connexion
@@ -23,7 +21,7 @@ function createConnextionBDD()
     }
 }
 /* --- Baptiste --- */
-
+// Fonction permettant de récupérer un tableau avec toutes les idées dans la bdd ainsi que les infos de son éditeur
 function getListIdees($pdo)
 {
     $requete = "
@@ -46,6 +44,8 @@ function getListIdees($pdo)
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+//fonction permettant de récupérer toutes les idées de l'utilisateur de la session dans un tableau
 function getListIdeesByUser($pdo, $pParametres)
 {
     $requete = "
@@ -71,6 +71,8 @@ function getListIdeesByUser($pdo, $pParametres)
     ]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+//fonction permettant de récupérer un tableau avec 
 function getCountVoteIdees($pdo)
 {
     $requete = '
@@ -85,6 +87,7 @@ function getCountVoteIdees($pdo)
     $stmt->execute();
     $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $formattedResult = [];
+    // Met l'id de l'idée en clé du tableau pour pouvoir les retrouver dans les boucles plus tard
     foreach ($result as $row) {
         $formattedResult[$row['id_idees']] = [
             'upvote' => $row['upvote'],
@@ -93,6 +96,8 @@ function getCountVoteIdees($pdo)
     }
     return $formattedResult;
 }
+
+// Fonction permettant de créer un modifier le vite de l'utilisateur pour une idée
 function setVoteIdee($pdo, $pParametres)
 {
     $requete = '
@@ -119,19 +124,6 @@ function setVoteIdee($pdo, $pParametres)
         ":id_idee" => $pParametres['id_idee'],
         ":vote" => $pParametres['vote'],
         ":date" => date('Y-m-d H:i:s', time())
-    ]);
-}
-function editIdee($pdo, $pParametres)
-{
-    $requete = "
-        UPDATE idees
-        SET text_idees = ':text_idees'
-        WHERE id_idees = :id_idees;
-    ";
-    $stmt = $pdo->prepare($requete);
-    $stmt->execute([
-        ":id_idees" => $pParametres['id_idees'],
-        ":text_idees" => $pParametres['text_idees']
     ]);
 }
 
