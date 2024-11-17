@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : dim. 17 nov. 2024 à 15:09
+-- Généré le : dim. 17 nov. 2024 à 15:18
 -- Version du serveur : 8.2.0
 -- Version de PHP : 8.3.13
 
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Base de données : `projet_base_php`
 --
+CREATE DATABASE IF NOT EXISTS `projet_base_php` DEFAULT CHARACTER SET armscii8 COLLATE armscii8_bin;
+USE `projet_base_php`;
 
 -- --------------------------------------------------------
 
