@@ -1,5 +1,6 @@
 <?php
-function createConnextionBDD(){
+function createConnextionBDD()
+{
     // Variables de connexion
     $domaine = 'localhost'; // Domaine ou adresse IP du serveur
     $table = 'projet_base_php'; // Nom de la base de données
@@ -23,8 +24,9 @@ function createConnextionBDD(){
 }
 /* --- Baptiste --- */
 
-function getListIdees($pdo){
-    $requete="
+function getListIdees($pdo)
+{
+    $requete = "
         SELECT
             i.id_idees,
             i.text_idees,
@@ -44,8 +46,9 @@ function getListIdees($pdo){
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-function getListIdeesByUser($pdo, $pParametres){
-    $requete="
+function getListIdeesByUser($pdo, $pParametres)
+{
+    $requete = "
         SELECT
             i.id_idees,
             i.text_idees,
@@ -64,12 +67,13 @@ function getListIdeesByUser($pdo, $pParametres){
 
     $stmt = $pdo->prepare($requete);
     $stmt->execute([
-        ":id_user"=>$pParametres['id_user'],
+        ":id_user" => $pParametres['id_user'],
     ]);
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-function getCountVoteIdees($pdo){
-    $requete='
+function getCountVoteIdees($pdo)
+{
+    $requete = '
     SELECT
         id_idees,
         SUM(CASE WHEN vote = 1 THEN 1 ELSE 0 END) AS upvote,
@@ -79,7 +83,7 @@ function getCountVoteIdees($pdo){
 ';
     $stmt = $pdo->prepare($requete);
     $stmt->execute();
-    $result=$stmt->fetchAll(PDO::FETCH_ASSOC);
+    $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $formattedResult = [];
     foreach ($result as $row) {
         $formattedResult[$row['id_idees']] = [
@@ -89,8 +93,9 @@ function getCountVoteIdees($pdo){
     }
     return $formattedResult;
 }
-function setVoteIdee($pdo, $pParametres){
-    $requete='
+function setVoteIdee($pdo, $pParametres)
+{
+    $requete = '
         INSERT INTO vote_idees
         (
             id_user,
@@ -110,21 +115,71 @@ function setVoteIdee($pdo, $pParametres){
     ';
     $stmt = $pdo->prepare($requete);
     $stmt->execute([
-        ":id_user"=>$pParametres['id_user'],
-        ":id_idee"=>$pParametres['id_idee'],
-        ":vote"=>$pParametres['vote'],
-        ":date"=>date('Y-m-d H:i:s', time())
+        ":id_user" => $pParametres['id_user'],
+        ":id_idee" => $pParametres['id_idee'],
+        ":vote" => $pParametres['vote'],
+        ":date" => date('Y-m-d H:i:s', time())
     ]);
 }
-function editIdee($pdo, $pParametres){
-    $requete="
+function editIdee($pdo, $pParametres)
+{
+    $requete = "
         UPDATE idees
         SET text_idees = ':text_idees'
         WHERE id_idees = :id_idees;
     ";
     $stmt = $pdo->prepare($requete);
     $stmt->execute([
-        ":id_idees"=>$pParametres['id_idees'],
-        ":text_idees"=>$pParametres['text_idees']
+        ":id_idees" => $pParametres['id_idees'],
+        ":text_idees" => $pParametres['text_idees']
     ]);
+}
+
+/* --- Lenny --- */
+
+//Fonction qui retourne les informations d'un user à partir de son login
+function getUserInfoByLogin($pdo, $login)
+{
+    $sql = "SELECT * FROM user WHERE identifiant_user = :login";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':login', $login, PDO::PARAM_STR);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+//Fonction qui insert un nouveau User dans la bdd
+function insertUser($pdo, $login, $mdp)
+{
+    $sql = "INSERT INTO `user` (`identifiant_user`, `password_user`) VALUES ( :login , :mdp );";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':login', $login, PDO::PARAM_STR);
+    $stmt->bindParam(':mdp', $mdp, PDO::PARAM_STR);
+    $stmt->execute();
+}
+
+//Fonction qui met a jour une idée dans la bdd
+function updateIdee($pdo, $titre_idees, $text_idees, $id_idees)
+{
+    $date = date('Y-m-d H:i:s', time());
+    $sql = "UPDATE `idees` SET `titre_idees`= :titre_idees,`text_idees`= :text_idees, `updated_at`= :updated_at WHERE `id_idees` = :id_idees";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':titre_idees', $titre_idees, PDO::PARAM_STR);
+    $stmt->bindParam(':text_idees', $text_idees, PDO::PARAM_STR);
+    $stmt->bindParam(':updated_at', $date, PDO::PARAM_STR);
+    $stmt->bindParam(':id_idees', $id_idees, PDO::PARAM_STR);
+    $stmt->execute();
+}
+
+//Fonction qui insert une idée dans la bdd
+function insertIdee($pdo, $titre_idees, $text_idees)
+{
+    $date = date('Y-m-d H:i:s', time());
+    $sql = "INSERT INTO `idees`(`titre_idees`, `text_idees`, `created_by`, `created_at`, `updated_at`) VALUES (:titre_idees, :text_idees, :created_by, :created_at, :updated_at)";
+    $stmt = $pdo->prepare($sql);
+    $stmt->bindParam(':titre_idees', $titre_idees, PDO::PARAM_STR);
+    $stmt->bindParam(':text_idees', $text_idees, PDO::PARAM_STR);
+    $stmt->bindParam(':created_by', $_SESSION["id_user"], PDO::PARAM_INT);
+    $stmt->bindParam(':created_at', $date, PDO::PARAM_STR);
+    $stmt->bindParam(':updated_at', $date, PDO::PARAM_STR);
+    $stmt->execute();
 }
